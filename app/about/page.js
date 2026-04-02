@@ -1,3 +1,10 @@
+export const metadata = {
+  title: "About",
+  description: "Basic website layout for The Wild Oasis",
+  icons:{
+    icon:"/logo.png"
+  }
+};
 function page() {
     return (
         <div>

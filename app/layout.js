@@ -1,8 +1,11 @@
-import "./globals.css";
+import "./_styles/globals.css";
 import Navigation from "./component/Navigation";
 
 export const metadata = {
-  title: "The Wild Oasis",
+  title: {
+    template: "%s / The Wild Oasis",
+    default: "Welcome / The Wild Oasis",
+  },
   description: "Basic website layout for The Wild Oasis",
   icons:{
     icon:"/logo.png"

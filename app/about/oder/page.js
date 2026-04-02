@@ -1,3 +1,10 @@
+export const metadata = {
+  title: "Order",
+  description: "Basic website layout for The Wild Oasis",
+  icons:{
+    icon:"/logo.png"
+  }
+};
 function Oder() {
     return (
         <div>
