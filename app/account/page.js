@@ -6,11 +6,13 @@ export const metadata = {
   }
 };
 function page() {
-    return (
-        <div>
-            <h1>Account The wild oasis</h1>
-        </div>
-    )
+  return (
+    <>
+      <h2 className="mb-7 text-2xl font-semibold text-accent-400 sm:text-3xl">
+        Welcome, DatNguyen
+      </h2>
+    </>
+  );
 }
 
-export default page
+export default page;

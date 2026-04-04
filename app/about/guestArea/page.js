@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Order",
+  title: "guestArea",
   description: "Basic website layout for The Wild Oasis",
   icons:{
     icon:"/logo.png"
@@ -8,7 +8,7 @@ export const metadata = {
 function Oder() {
     return (
         <div>
-            <h1>Order Cabins</h1>
+            <h1>guest Area</h1>
         </div>
     )
 }

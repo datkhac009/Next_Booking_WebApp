@@ -1,16 +1,35 @@
+import Image from "next/image";
+import Link from "next/link";
+import bg from "../public/bg.png"
 export default function Home() {
   return (
-    <section className="space-y-4 py-8">
-      <p className="text-sm uppercase tracking-[0.2em] text-stone-500">
-        Welcome
-      </p>
-      <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-stone-900 sm:text-5xl">
-        The Wild Oasis. A clean base layout with header, main, and footer.
-      </h1>
-      <p className="max-w-2xl text-lg leading-8 text-stone-600">
-        This page now sits inside the shared layout so the rest of the site can
-        reuse the same structure consistently.
-      </p>
+    <section className="relative flex flex-1 items-center justify-center overflow-hidden">
+      <div className="fixed inset-0 z-0">
+        <Image
+          src={bg}
+          fill
+          placeholder="blur"
+          quality={80}
+          className="object-cover object-top"
+          alt="Mountains and forests with two cabins"
+          priority
+        />
+      </div>
+
+      <div className="fixed inset-0 z-10 bg-primary-950/35" />
+
+      <div className="relative z-20 flex flex-col items-center justify-center px-6 py-16 text-center">
+        <h1 className="mb-10 text-6xl font-normal tracking-tight text-primary-50 sm:text-7xl lg:text-8xl">
+          Welcome to paradise.
+        </h1>
+
+        <Link
+          href="/cabins"
+          className="bg-accent-500 px-8 py-6 text-lg font-semibold text-primary-800 transition-all hover:bg-accent-600"
+        >
+          Explore luxury cabins
+        </Link>
+      </div>
     </section>
   );
 }

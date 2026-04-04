@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import Logo from "./Logo";
 
@@ -15,12 +14,12 @@ function Navigation() {
       <div>
         <Logo />
       </div>
-      <ul className="flex flex-wrap gap-2 text-sm text-stone-600">
+      <ul className="flex flex-wrap gap-2 rounded-full border border-white/10 bg-white/5 p-1.5 text-sm text-stone-300 backdrop-blur">
         {links.map((link) => (
           <li key={link.href}>
             <Link
               href={link.href}
-              className="inline-flex rounded-md px-3 py-2 transition hover:bg-stone-100 hover:text-stone-950"
+              className="inline-flex rounded-full px-4 py-2 transition duration-200 hover:bg-accent-500 hover:text-primary-950"
             >
               {link.label}
             </Link>
