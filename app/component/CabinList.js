@@ -4,7 +4,13 @@ import CabinCard from "./CabinCart";
 async function CabinList() {
   const cabins = await getCabins();
 
-  if(!cabins.length) return null;
+  if (!cabins.length)
+    return (
+      <p className="text-center text-lg text-primary-200">
+        No cabins are available right now.
+      </p>
+    );
+
   return (
     <div>
       {cabins.length > 0 && (
