@@ -17,6 +17,8 @@ export async function getCabin(id) {
 
   if (error) {
     console.error(error);
+    throw new Error(error.message);
+    
   }
 
   return data;
@@ -32,6 +34,8 @@ export async function getCabinPrice(id) {
 
   if (error) {
     console.error(error);
+    throw new Error(error.message);
+
   }
 
   return data;
