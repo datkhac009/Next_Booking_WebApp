@@ -2,6 +2,8 @@ import CabinList from "@/component/CabinList";
 import Loading from "./loading";
 import { Suspense } from "react";
 
+export const revalidate = 3600;
+
 export const metadata = {
   title: "Cabins",
   description: "Basic website layout for The Wild Oasis",
