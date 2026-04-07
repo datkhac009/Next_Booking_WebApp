@@ -1,6 +1,8 @@
+
 import Image from "next/image";
 import { getCabin, getCabins } from "@/_lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
+import TextExpander from "@/component/TextExpander";
 
 
 
@@ -54,7 +56,9 @@ export default async function Page({ params }) {
                 Cabin {name}
               </h1>
               <p className="max-w-xl text-base leading-8 text-primary-200 sm:text-lg">
-                {description}
+                <TextExpander>
+                  {description}
+                </TextExpander>
               </p>
             </div>
 
