@@ -5,9 +5,9 @@ export const metadata = {
   title: "Reservations",
 };
 
-export default function Page() {
+export default async function Page() {
   // CHANGE
-  const bookings = [];
+  const bookings = []
 
   return (
     <div>

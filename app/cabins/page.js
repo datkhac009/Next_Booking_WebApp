@@ -1,8 +1,9 @@
 import CabinList from "@/component/CabinList";
+import Filter from "@/component/Filter";
 import Loading from "./loading";
 import { Suspense } from "react";
 
-export const revalidate = 3600;
+export const revalidate = 0;
 
 export const metadata = {
   title: "Cabins",
@@ -12,7 +13,8 @@ export const metadata = {
   },
 };
 
-export default function Page() {
+export default function Page({ searchParams }) {
+  const filter = searchParams?.capacity ?? "all";
   return (
     <section className="mx-auto flex w-full max-w-8xl flex-col px-4 py-10 sm:px-6 lg:px-8">
       <h1 className="mb-5 text-center text-3xl font-medium text-accent-400 sm:text-4xl">
@@ -27,9 +29,12 @@ export default function Page() {
         home away from home. The perfect spot for a peaceful, calm vacation.
         Welcome to paradise.
       </p>
-      <Suspense fallback={<Loading />}>
-        <CabinList />
-      </Suspense>
+      <div className="mx-auto w-full max-w-[80rem]">
+        <Filter />
+        <Suspense key={filter} fallback={<Loading />}>
+          <CabinList filter={filter} />
+        </Suspense>
+      </div>
     </section>
   );
 }
