@@ -4,6 +4,7 @@ import {
   getCabins,
   getSettings,
 } from "@/_lib/data-service";
+import { auth } from "@/_lib/auth";
 import Cabin from "@/component/Cabin";
 import Reservation from "@/component/Reservation";
 
@@ -11,14 +12,16 @@ export async function generateMetadata({ params }) {
   const { name } = await getCabin(params.cabinID);
   return { title: `Cabin ${name}` };
 }
-export async function generateStaticParams(){
+export async function generateStaticParams() {
   const cabins = await getCabins();
-  const ids = cabins.map((cabin) => ({cabinID:String(cabin.id)}));
+  const ids = cabins.map((cabin) => ({ cabinID: String(cabin.id) }));
 
   console.log(ids);
-  return ids
+  return ids;
 }
 export default async function Page({ params }) {
+  const session = await auth(); // get user by NEXTAUTH
+
   const [cabin, settings, bookedDates] = await Promise.all([
     getCabin(params.cabinID),
     getSettings(),
@@ -43,6 +46,7 @@ export default async function Page({ params }) {
           cabin={cabin}
           settings={settings}
           bookedDates={bookedDates}
+          user={session?.user}
         />
       </div>
     </section>

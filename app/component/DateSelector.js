@@ -31,8 +31,6 @@ function DateSelector({ settings, cabin, bookedDates, range, setRange, resetRang
         mode="range"
         onSelect={setRange}
         selected={range}
-        // min={minBookingLength + 1}
-        // max={maxBookingLength}
         fromMonth={new Date()}
         fromDate={new Date()}
         toYear={new Date().getFullYear() + 5}
