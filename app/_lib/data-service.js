@@ -44,7 +44,7 @@ export const getCabins = async function () {
     .select("id, name, maxCapacity, regularPrice, discount, image")
     .order("name");
 
-    // await new Promise((res) => setTimeout(res, 1500));
+  // await new Promise((res) => setTimeout(res, 1500));
 
   if (error) {
     console.error(error);
@@ -54,15 +54,24 @@ export const getCabins = async function () {
   return data;
 };
 
-// Guests are uniquely identified by their email address
+// Guest được nhận diện duy nhất bằng email.
 export async function getGuest(email) {
+  console.log("[data.getGuest] Tim guest theo email:", email);
   const { data, error } = await supabase
-    .from("guests")
+    .from("guest")
     .select("*")
     .eq("email", email)
-    .single();
+    .maybeSingle();
 
-  // No error here! We handle the possibility of no guest in the sign in callback
+  if (error) {
+    console.error("Lỗi khi lấy guest từ Supabase:", error);
+    throw new Error(error.message || "Guest could not be loaded");
+  }
+
+  console.log(
+    "[data.getGuest] Ket qua:",
+    data ? `Tim thay guest id ${data.id}` : "Khong tim thay guest",
+  );
   return data;
 }
 
@@ -156,13 +165,15 @@ export async function getCountries() {
 // CREATE
 
 export async function createGuest(newGuest) {
-  const { data, error } = await supabase.from("guests").insert([newGuest]);
+  console.log("[data.createGuest] Tao guest moi:", newGuest);
+  const { data, error } = await supabase.from("guest").insert([newGuest]);
 
   if (error) {
-    console.error(error);
-    throw new Error("Guest could not be created");
+    console.error("Lỗi khi tạo guest trong Supabase:", error);
+    throw new Error(error.message || "Guest could not be created");
   }
 
+  console.log("[data.createGuest] Tao guest thanh cong");
   return data;
 }
 
@@ -188,7 +199,7 @@ export async function createBooking(newBooking) {
 // The updatedFields is an object which should ONLY contain the updated data
 export async function updateGuest(id, updatedFields) {
   const { data, error } = await supabase
-    .from("guests")
+    .from("guest")
     .update(updatedFields)
     .eq("id", id)
     .select()

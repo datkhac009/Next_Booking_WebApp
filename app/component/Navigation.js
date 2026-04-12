@@ -4,7 +4,7 @@ import Logo from "./Logo";
 import { auth } from "@/_lib/auth";
 
 export default async function Navigation() {
-  const session = await auth();
+  const session = await auth(); // Lấy session ở server để render đúng link theo trạng thái đăng nhập.
   const linkClassName =
     "inline-flex h-11 items-center rounded-full px-4 text-sm font-medium tracking-wide transition duration-200 hover:bg-accent-500 hover:text-primary-950";
 
@@ -34,7 +34,8 @@ export default async function Navigation() {
 
         <li>
           <Link
-            href={session?.user ? "/account" : "/guestArea"}
+            // Chưa đăng nhập thì vào trang login, còn đã đăng nhập thì đi thẳng tới account.
+            href={session?.user ? "/account" : "/login"}
             className={`${linkClassName} gap-3`}
           >
             {session?.user?.image && (
@@ -47,7 +48,7 @@ export default async function Navigation() {
                 referrerPolicy="no-referrer"
               />
             )}
-            <span>{session?.user ? "Account" : "Guest area"}</span>
+            <span>{session?.user ? "Account" : "Sign in"}</span>
           </Link>
         </li>
       </ul>

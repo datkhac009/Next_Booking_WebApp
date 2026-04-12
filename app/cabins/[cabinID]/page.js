@@ -21,7 +21,7 @@ export async function generateStaticParams() {
 }
 export default async function Page({ params }) {
   const session = await auth(); // get user by NEXTAUTH
-
+  console.log(session)
   const [cabin, settings, bookedDates] = await Promise.all([
     getCabin(params.cabinID),
     getSettings(),
