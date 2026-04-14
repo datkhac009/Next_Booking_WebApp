@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "./Logo";
+import avatarDefault from "../../public/avatar-default.jpg";
 import { auth } from "@/_lib/auth";
 
 export default async function Navigation() {
   const session = await auth(); // Lấy session ở server để render đúng link theo trạng thái đăng nhập.
+  console.log("Navigation session:", session);
   const linkClassName =
     "inline-flex h-11 items-center rounded-full px-4 text-sm font-medium tracking-wide transition duration-200 hover:bg-accent-500 hover:text-primary-950";
 
@@ -38,9 +40,9 @@ export default async function Navigation() {
             href={session?.user ? "/account" : "/login"}
             className={`${linkClassName} gap-3`}
           >
-            {session?.user?.image && (
+            {session?.user && (
               <Image
-                src={session.user.image}
+                src={session.user.image || avatarDefault}
                 alt={session.user.name ?? "User avatar"}
                 width={32}
                 height={32}

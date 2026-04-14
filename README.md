@@ -2,7 +2,16 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+Create `.env.local` from `.env.example` before starting the app. Google sign-in requires:
+
+- `AUTH_GOOGLE_ID`
+- `AUTH_GOOGLE_SECRET`
+- `NEXTAUTH_SECRET`
+- `NEXTAUTH_URL`
+- `SUPABASE_URL`
+- `SUPABASE_KEY`
+
+Then run the development server:
 
 ```bash
 npm run dev

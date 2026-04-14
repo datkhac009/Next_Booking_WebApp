@@ -1,3 +1,5 @@
+import { auth } from "@/_lib/auth";
+
 export const metadata = {
   title: "Account",
   description: "Basic website layout for The Wild Oasis",
@@ -5,14 +7,15 @@ export const metadata = {
     icon: "/logo.png",
   },
 };
-function page() {
+
+export default async function Page() {
+  const session = await auth();
+  const fullName = session?.user?.name ?? "Guest";
+
   return (
-    <>
-      <h2 className="font-semibold text-2xl text-accent-400 mb-7">
-        Welcome, DatNguyen
-      </h2>
-    </>
+    <h2 className="mb-7 text-2xl font-semibold text-accent-400">
+      Welcome, {fullName}
+    </h2>
   );
 }
 
-export default page;
