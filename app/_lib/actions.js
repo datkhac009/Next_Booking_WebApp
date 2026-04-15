@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { auth } from "./auth";
 import { updateGuest } from "./data-service";
 
@@ -21,6 +22,8 @@ export async function updateProfile(formData) {
   const [nationality, countryFlag] = nationalityValue.split("%");
 
   const updateData = { nationalID, nationality, countryFlag };
+
+  revalidatePath("/account/profile");
 
   return updateGuest(session.user.guestId, updateData);
 }
