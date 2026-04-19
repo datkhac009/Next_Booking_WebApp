@@ -1,5 +1,5 @@
 import { eachDayOfInterval } from "date-fns";
-import { supabase } from "./supabase";
+import { supabase, supabaseAdmin } from "./supabase";
 
 /////////////
 
@@ -166,7 +166,9 @@ export async function getCountries() {
 
 export async function createGuest(newGuest) {
   console.log("[data.createGuest] Tao guest moi:", newGuest);
-  const { data, error } = await supabase.from("guest").insert([newGuest]);
+  if (!supabaseAdmin) throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY");
+
+  const { data, error } = await supabaseAdmin.from("guest").insert([newGuest]);
 
   if (error) {
     console.error("Lỗi khi tạo guest trong Supabase:", error);
@@ -178,7 +180,9 @@ export async function createGuest(newGuest) {
 }
 
 export async function createBooking(newBooking) {
-  const { data, error } = await supabase
+  if (!supabaseAdmin) throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY");
+
+  const { data, error } = await supabaseAdmin
     .from("bookings")
     .insert([newBooking])
     // So that the newly created object gets returned!
@@ -187,7 +191,7 @@ export async function createBooking(newBooking) {
 
   if (error) {
     console.error(error);
-    throw new Error("Booking could not be created");
+    throw new Error(error.message || "Booking could not be created");
   }
 
   return data;
@@ -198,7 +202,9 @@ export async function createBooking(newBooking) {
 
 // The updatedFields is an object which should ONLY contain the updated data
 export async function updateGuest(id, updatedFields) {
-  const { data, error } = await supabase
+  if (!supabaseAdmin) throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY");
+
+  const { data, error } = await supabaseAdmin
     .from("guest")
     .update(updatedFields)
     .eq("id", id)
@@ -207,13 +213,15 @@ export async function updateGuest(id, updatedFields) {
 
   if (error) {
     console.error(error);
-    throw new Error("Guest could not be updated");
+    throw new Error(error.message || "Guest could not be updated");
   }
   return data;
 }
 
 export async function updateBooking(id, updatedFields) {
-  const { data, error } = await supabase
+  if (!supabaseAdmin) throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY");
+
+  const { data, error } = await supabaseAdmin
     .from("bookings")
     .update(updatedFields)
     .eq("id", id)
@@ -222,7 +230,7 @@ export async function updateBooking(id, updatedFields) {
 
   if (error) {
     console.error(error);
-    throw new Error("Booking could not be updated");
+    throw new Error(error.message || "Booking could not be updated");
   }
   return data;
 }
@@ -231,11 +239,16 @@ export async function updateBooking(id, updatedFields) {
 // DELETE
 
 export async function deleteBooking(id) {
-  const { data, error } = await supabase.from("bookings").delete().eq("id", id);
+  if (!supabaseAdmin) throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY");
+
+  const { data, error } = await supabaseAdmin
+    .from("bookings")
+    .delete()
+    .eq("id", id);
 
   if (error) {
     console.error(error);
-    throw new Error("Booking could not be deleted");
+    throw new Error(error.message || "Booking could not be deleted");
   }
   return data;
 }

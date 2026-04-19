@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 function SelectCountry({ defaultCountry, name, id, className }) {
@@ -42,7 +43,7 @@ function SelectCountry({ defaultCountry, name, id, className }) {
     <>
       <div className="mb-2 flex justify-end">
         {selectedFlag ? (
-          <img src={selectedFlag} alt="Country flag" className="h-5 w-auto rounded-sm" />
+          <Image fill src={selectedFlag} alt="Country flag" className="h-5 w-auto rounded-sm" />
         ) : null}
       </div>
 

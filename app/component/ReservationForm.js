@@ -82,14 +82,14 @@ function ReservationForm({ cabin, range, user }) {
 
         <div className="space-y-2">
           <label
-            htmlFor="observations"
+            htmlFor="obvervations"
             className="block text-sm font-semibold uppercase tracking-[0.15em] text-primary-300"
           >
             Anything we should know about your stay?
           </label>
           <textarea
-            name="observations"
-            id="observations"
+            name="obvervations"
+            id="obvervations"
             className="min-h-32 w-full rounded-xl border border-primary-700 bg-primary-950 px-4 py-3 text-primary-100 shadow-sm outline-none transition-colors focus:border-accent-400"
             placeholder="Any pets, allergies, special requirements, etc.?"
           />

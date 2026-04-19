@@ -2,10 +2,15 @@
 
 import { revalidatePath } from "next/cache";
 import { auth } from "./auth";
-import { deleteBooking, getBooking, updateGuest } from "./data-service";
+import {
+  deleteBooking,
+  getBooking,
+  updateBooking as updateBookingInDB,
+  updateGuest,
+} from "./data-service";
 
 export async function updateProfile(formData) {
-    console.log(formData)
+  console.log(formData);
   const session = await auth();
   if (!session?.user?.guestId) throw new Error("You must be logged in");
   console.log(session.user.guestId);
@@ -23,9 +28,10 @@ export async function updateProfile(formData) {
 
   const updateData = { nationalID, nationality, countryFlag };
 
+  const updatedGuest = await updateGuest(session.user.guestId, updateData);
   revalidatePath("/account/profile");
 
-  return updateGuest(session.user.guestId, updateData);
+  return updatedGuest;
 }
 
 export async function deleteReservation(bookingId) {
@@ -33,13 +39,45 @@ export async function deleteReservation(bookingId) {
 
   if (!session?.user?.guestId) throw new Error("You must be logged in");
 
+  //get id booking
+
   const booking = await getBooking(bookingId);
   const bookingGuestId = booking.guestID ?? booking.guestId;
 
-  if (Number(bookingGuestId) !== Number(session.user.guestId))
-    throw new Error("You are not allowed to delete this booking");
+  if (Number(session?.user?.guestId) !== Number(bookingGuestId))
+    throw new Error("Error id not match");
 
-  await deleteBooking(bookingId);
-
+  const deletedBooking = await deleteBooking(bookingId);
   revalidatePath("/account/reservations");
+
+  return deletedBooking;
+}
+
+export async function updateBooking(formData) {
+  const session = await auth();
+
+  if (!session?.user?.guestId) throw new Error("You must be logged in");
+
+  const numGuests = Number(formData.get("numGuests"));
+  const obvervations = formData.get("obvervations")?.trim();
+  const bookingId = formData.get("bookingId")?.trim();
+
+  console.log({ bookingId, numGuests, obvervations });
+  const booking = await getBooking(bookingId);
+  console.log("booking:", booking);
+  console.log("session guest:", session.user.guestId);
+
+  const bookingGuestId = booking.guestID ?? booking.guestId;
+
+  if (Number(session.user.guestId) !== Number(bookingGuestId)) {
+    throw new Error("Error id not match");
+  }
+
+  const updatedBooking = await updateBookingInDB(bookingId, {
+    numGuests,
+    obvervations,
+  });
+  revalidatePath("/account/reservations");
+
+  return updatedBooking;
 }

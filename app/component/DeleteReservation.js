@@ -5,10 +5,16 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import { useFormStatus } from "react-dom";
 
 function DeleteReservation({ bookingId }) {
-  const deleteReservationWithId = deleteReservation.bind(null, bookingId);
+  const deleteReservationId = deleteReservation.bind(null, bookingId);
+
+  function handleSubmit(e) {
+    if (!confirm(`Are you sure you want to delete booking ${bookingId}?`)) {
+      e.preventDefault();
+    }
+  }
 
   return (
-    <form action={deleteReservationWithId} className="h-full w-full">
+    <form action={deleteReservationId} onSubmit={handleSubmit} className="h-full w-full">
       <DeleteButton />
     </form>
   );
@@ -19,6 +25,7 @@ function DeleteButton() {
 
   return (
     <button
+      type="submit"
       className="group flex h-full min-h-14 w-full items-center justify-center gap-2 px-3 text-xs font-bold uppercase tracking-wide text-primary-300 transition-colors hover:bg-accent-500 hover:text-primary-950 disabled:cursor-not-allowed disabled:bg-primary-900 disabled:text-primary-500 sm:min-h-0"
       disabled={pending}
     >
