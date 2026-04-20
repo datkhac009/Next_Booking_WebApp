@@ -1,12 +1,31 @@
 "use client";
 
-import { format } from "date-fns";
+import { createBookings } from "@/_lib/actions";
+import { differenceInDays, format } from "date-fns";
 import Image from "next/image";
+import { useFormStatus } from "react-dom";
 
 function ReservationForm({ cabin, range, user }) {
-  const { maxCapacity } = cabin;
-  const hasStartDate = Boolean(range.from);
-  const hasEndDate = Boolean(range.to);
+  const { maxCapacity, regularPrice, discount, id} = cabin;
+
+  const startDate = range.from;
+  const endDate = range.to;
+  const hasStartDate = Boolean(startDate);
+  const hasEndDate = Boolean(endDate);
+  const numNight =
+    startDate && endDate ? differenceInDays(endDate, startDate) : 0;
+  const cabinPrice = numNight * (regularPrice - discount);
+  const cabinID = cabin.id;
+  const bookingsData = {
+    startDate,
+    endDate,
+    numNight,
+    cabinsPrice: cabinPrice,
+    cabinID : id,
+  };
+  const createBookingsWithData = createBookings.bind(null, bookingsData);
+
+
   const dateLabelFormat = hasStartDate
     ? `${format(range.from, "EEE, MMM d, yyyy")}${
         hasEndDate ? ` - ${format(range.to, "EEE, MMM d, yyyy")}` : ""
@@ -55,7 +74,7 @@ function ReservationForm({ cabin, range, user }) {
         </p>
       </div>
 
-      <form className="flex flex-1 flex-col gap-6 px-6 py-8 text-base sm:px-8">
+      <form action={createBookingsWithData} className="flex flex-1 flex-col gap-6 px-6 py-8 text-base sm:px-8">
         <div className="space-y-2">
           <label
             htmlFor="numGuests"
@@ -102,17 +121,25 @@ function ReservationForm({ cabin, range, user }) {
               : "Start by selecting dates on the calendar."}
           </p>
 
-          <button
-            type="submit"
-            disabled={!hasEndDate}
-            className="rounded-xl bg-accent-500 px-6 py-3 font-semibold text-primary-900 transition-colors hover:bg-accent-400 disabled:cursor-not-allowed disabled:bg-primary-700 disabled:text-primary-400"
-          >
-            Reserve now
-          </button>
+          <SucssesOrder />
         </div>
       </form>
     </div>
   );
 }
 
+export function SucssesOrder(){
+  const {pending} = useFormStatus()
+
+  return(
+    <button
+    className="rounded-xl bg-accent-500 px-6 py-3 font-semibold text-primary-900 transition-colors hover:bg-accent-400 disabled:cursor-not-allowed disabled:bg-primary-700 disabled:text-primary-400"
+    type="submit"
+    disabled={pending}
+    >
+      {pending ? "Reserve..." : "Reserve now"}
+    </button>
+  )
+
+}
 export default ReservationForm;

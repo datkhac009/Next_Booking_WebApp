@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 const ReservationContext = createContext();
 
@@ -7,9 +7,9 @@ const initalState = { from: undefined, to: undefined };
 export function ReservationProvider({ children }) {
   const [range, setRange] = useState(initalState);
 
-  function resetRange() {
+  const resetRange = useCallback(() => {
     setRange(initalState);
-  }
+  }, []);
   const value = { range, setRange ,resetRange};
   return <ReservationContext.Provider value={value}>{children}</ReservationContext.Provider>;
 }

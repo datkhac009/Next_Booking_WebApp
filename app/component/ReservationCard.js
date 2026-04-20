@@ -14,7 +14,7 @@ function ReservationCard({ booking }) {
     guestId,
     startDate,
     endDate,
-    numNights,
+    numNight,
     totalPrice,
     numGuests,
     status,
@@ -44,7 +44,7 @@ function ReservationCard({ booking }) {
       <div className="flex min-w-0 flex-col px-5 py-4 sm:px-6">
         <div className="flex items-start justify-between gap-4">
           <h3 className="text-xl font-semibold leading-tight text-primary-50">
-            {numNights} nights in Cabin {name}
+            {numNight} nights in Cabin {name}
           </h3>
           {isPastBooking ? (
             <span className="flex h-7 shrink-0 items-center rounded-sm bg-yellow-800/90 px-3 text-xs font-bold uppercase tracking-wide text-yellow-100">

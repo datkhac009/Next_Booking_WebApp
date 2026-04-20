@@ -139,7 +139,11 @@ export async function getBookedDatesByCabinId(cabinId) {
 }
 
 export async function getSettings() {
-  const { data, error } = await supabase.from("settings").select("*").single();
+  if (!supabaseAdmin) throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY");
+  const { data, error } = await supabaseAdmin
+    .from("settings")
+    .select("*")
+    .single();
 
   if (error) {
     console.error(error);

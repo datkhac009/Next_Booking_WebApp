@@ -1,6 +1,6 @@
 "use client";
 
-import { differenceInDays } from "date-fns";
+import { differenceInDays, startOfToday } from "date-fns";
 import { isWithinInterval } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
@@ -24,6 +24,8 @@ function DateSelector({ settings, cabin, bookedDates, range, setRange, resetRang
 
   // Get data SETTINGS
   const { minBookingLength, maxBookingLength } = settings;
+
+  console.log(bookedDates) // log ra check thử các ngày được book
   return (
     <div className="flex flex-col justify-between border-b border-primary-800 lg:min-h-[42rem] lg:border-b-0 lg:border-r">
       <DayPicker
@@ -36,7 +38,7 @@ function DateSelector({ settings, cabin, bookedDates, range, setRange, resetRang
         toYear={new Date().getFullYear() + 5}
         captionLayout="dropdown"
         numberOfMonths={2}
-        disabled={bookedDates}
+        disabled={[{ before: startOfToday() }, ...bookedDates]}//disable tất cả ngày trước hôm nay và disable luôn các ngày đã được đặt
         modifiers={{ booked: bookedDates }}
       />
 

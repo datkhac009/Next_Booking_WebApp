@@ -1,8 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { auth } from "./auth";
 import {
+  createBooking,
   deleteBooking,
   getBooking,
   updateBooking as updateBookingInDB,
@@ -80,4 +82,41 @@ export async function updateBooking(formData) {
   revalidatePath("/account/reservations");
 
   return updatedBooking;
+}
+
+export async function createBookings(bookingData, formData) {
+  const session = await auth();
+  console.log("data CreateBooking", bookingData);
+  console.log("data Form action", formData);
+  if (!session?.user?.guestId) throw new Error("You must be logged in");
+
+  const numGuests = Number(formData.get("numGuests"));
+  const obvervations = formData.get("obvervations")?.trim() || null;
+  const totalPrice = Number(bookingData.cabinsPrice)
+  if (!bookingData?.startDate || !bookingData?.endDate) {
+    throw new Error("Please select a start and end date");
+  }
+
+  if (!numGuests || numGuests < 1) {
+    throw new Error("Please select the number of guests");
+  }
+
+  const newBooking = await createBooking({
+    ...bookingData,
+    guestID: session.user.guestId,
+    numGuests,
+    obvervations,
+    extrasPrice: 0,
+    totalPrice: totalPrice,
+    hasBreakfast: false,
+    isPaid: false,
+    status: "unconfirmed",
+  });
+
+  revalidatePath(`/cabins/${bookingData.cabinID}`);
+  revalidatePath("/account/reservations");
+
+  redirect(
+    `/thankyou?bookingId=${newBooking.id}&cabinId=${bookingData.cabinID}`,
+  );
 }

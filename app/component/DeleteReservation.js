@@ -8,7 +8,11 @@ function DeleteReservation({ bookingId }) {
   const deleteReservationId = deleteReservation.bind(null, bookingId);
 
   function handleSubmit(e) {
-    if (!confirm(`Are you sure you want to delete booking ${bookingId}?`)) {
+    const hasConfirmed = window.confirm(
+      `Delete booking #${bookingId}?\n\nThis action cannot be undone.`,
+    );
+
+    if (!hasConfirmed) {
       e.preventDefault();
     }
   }
